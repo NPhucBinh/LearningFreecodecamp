@@ -1,9 +1,11 @@
 #!/bin/bash
-
-echo -e "Please provide an element as an argument."
 PSQL="psql --username=freecodecamp --dbname=periodic_table -t --no-align -c"
 
-if [[ $1 ]]
+
+if [[ -z $1 ]]
+then
+  echo -e "Please provide an element as an argument."
+elif [[ $1 ]]
 then
   if [[ $1 =~ ^[0-9]+$ ]]
   then
