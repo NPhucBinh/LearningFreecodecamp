@@ -7,18 +7,18 @@ usernames_upper=$(echo $usernames | tr '[:lower:]' '[:upper:]')
 users=$($PSQL "SELECT usernames FROM number_guess where usernames='$usernames_upper'")
 secret_number=$((RANDOM % 1000 + 1))
 #echo $secret_number  
-if [[ -z $users ]]
-then
-  echo -e "Welcome, $usernames_upper! It looks like this is your first time here."
-  INSERT=$($PSQL "INSERT INTO number_guess(usernames) VALUES('$usernames_upper')")
-  echo -e "Guess the secret number between 1 and 1000"
-elif [[ $users ]]
+if [[ $users ]]
 then
   VAR=$($PSQL "SELECT * FROM number_guess where usernames='$usernames_upper'")
   echo "$VAR" | while IFS='|' read USER_ID USERNAME PLAY BEST
   do
     echo -e "Welcome back, $USERNAME! You have played $PLAY games, and your best game took $BEST guesses."
   done
+  echo -e "Guess the secret number between 1 and 1000"
+elif [[ -z $users ]]
+then
+  echo -e "Welcome, $usernames_upper! It looks like this is your first time here."
+  INSERT=$($PSQL "INSERT INTO number_guess(usernames) VALUES('$usernames_upper')")
   echo -e "Guess the secret number between 1 and 1000"
 fi
 users=$($PSQL "SELECT usernames FROM number_guess where usernames='$usernames_upper'")
